@@ -16,8 +16,7 @@ export default {
 </template>
 
 <style lang="scss">
-$variable: #bada55;
 body {
-  background-color: $variable;
+  background-color: $bada55;
 }
 </style>
