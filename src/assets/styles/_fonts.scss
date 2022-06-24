@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;700&display=swap');
+
+* {
+  font-family: 'Overpass',
+    sans-serif !important;
+}
+
+.font {
+  font-family: 'Overpass',
+    sans-serif !important;
+
+  &--primary {
+    @extend .font;
+  }
+
+  &--regular {
+    @extend .font;
+    font-weight: 400;
+  }
+
+  &--bold {
+    @extend .font;
+    font-weight: 800;
+  }
+
+  &--light {
+    @extend .font;
+    font-weight: 300;
+  }
+}
