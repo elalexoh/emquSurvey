@@ -2,3 +2,39 @@
 @import './colors';
 @import './vars';
 @import './fonts';
+
+body {
+  overflow: hidden; //?? REMOVE SCROLL
+}
+
+// HELPERS
+%main-title {
+  font-weight   : bold;
+  font-size     : 1.5em;
+  letter-spacing: 0.5px;
+  margin-bottom : 15px;
+}
+
+%description {
+  font-size    : 0.9em;
+  color        : $light-grey;
+  font-weight  : 300;
+  margin-bottom: 20px;
+  line-height  : 1.5;
+}
+
+// RIPPLE 
+.ripple {
+  background-position: center;
+  transition         : background 0.8s;
+}
+
+.ripple:hover {
+  background: $accent radial-gradient(circle, transparent 1%, $accent 1%) center/15000%;
+}
+
+.ripple:active {
+  background-color: $accent;
+  background-size : 100%;
+  transition      : background 0s;
+}
