@@ -3,8 +3,14 @@
 @import './vars';
 @import './fonts';
 
+
 body {
-  overflow: hidden; //?? REMOVE SCROLL
+  // overflow: hidden; //?? REMOVE SCROLL
+}
+
+hr {
+  margin : 20px 0;
+  opacity: .25;
 }
 
 // HELPERS
@@ -23,18 +29,44 @@ body {
   line-height  : 1.5;
 }
 
+.danger-text {
+  color: $danger;
+}
+
+.success-text {
+  color: $success;
+}
+
 // RIPPLE 
 .ripple {
   background-position: center;
-  transition         : background 0.8s;
+  transition         : background 0.3s;
 }
 
 .ripple:hover {
-  background: $accent radial-gradient(circle, transparent 1%, $accent 1%) center/15000%;
+  background: $accent radial-gradient(circle, transparent 1%, $medium-grey 1%) center/15000%;
 }
 
 .ripple:active {
   background-color: $accent;
   background-size : 100%;
   transition      : background 0s;
+}
+
+//GLOBALS
+.page {
+  min-height     : 100vh;
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+}
+
+.bg {
+  background-color: transparent;
+
+  &--accent {
+    @extend .bg;
+    background-color: $accent;
+    background      : rgba($success, 1) !important;
+  }
 }
