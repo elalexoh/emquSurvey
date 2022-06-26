@@ -1,5 +1,6 @@
 <template>
   <section class="stepper" :class="isCompleted ? 'completed' : ''">
+    <!-- Stepper form -->
     <template v-if="!isCompleted">
       <div class="stepper__head">
         <div class="icons">
@@ -49,10 +50,13 @@
                   @change="oldAgeTouched = true"
                 >
                   <option :value="undefined">Indicanos tu edad</option>
-                  <option value="range-a">18 - 25</option>
-                  <option value="range-b">26 - 33</option>
-                  <option value="range-c">34 - 40</option>
-                  <option value="range-d">40+</option>
+                  <option
+                    :value="range._id"
+                    v-for="(range, i) in ageRanges"
+                    :key="i"
+                  >
+                    {{ range.label }}
+                  </option>
                 </select>
                 <span
                   class="validation-error"
@@ -88,14 +92,32 @@
                 </span>
               </div>
               <div class="group">
-                <input
+                <!-- <input
                   class="input"
                   type="text"
                   id="input-1"
                   placeholder="¿Cual es tu red social favorita?"
                   v-model="favoriteSocialMedia"
                   @change="favoriteSocialMediaTouched = true"
-                />
+                /> -->
+                <select
+                  name="oldAge"
+                  class="input--select"
+                  v-model="favoriteSocialMedia"
+                  id=""
+                  @change="favoriteSocialMediaTouched = true"
+                >
+                  <option :value="undefined">
+                    ¿Cual es tu red social favorita?
+                  </option>
+                  <option
+                    :value="socialMedia._id"
+                    v-for="(socialMedia, i) in SocialMedias"
+                    :key="i"
+                  >
+                    {{ socialMedia.label }}
+                  </option>
+                </select>
                 <span
                   class="validation-error"
                   v-if="favoriteSocialMediaTouched && favoriteSocialMediaError"
@@ -231,6 +253,7 @@
         </button>
       </div>
     </template>
+    <!-- Completed -->
     <template v-else>
       <div class="stepper__header">
         <img class="icon-thank" :src="iconThankYou" alt="" />
@@ -243,25 +266,29 @@
         </p>
       </div>
       <div class="stepper__footer">
-        <a href="#">login</a>
+        <router-link class="dashboard-link ripple" to="/dashboard" tag="a"
+          >Dashboard</router-link
+        >
+        <!-- <a href="#">login</a> -->
       </div>
     </template>
   </section>
 </template>
 
 <script lang="ts">
-import iconStartImg from "../../../assets/images/icon_star.svg";
 import iconThankYou from "../../../assets/images/icon_thank-you.svg";
-import { useMainStore } from "../../../stores/mainStore";
 import iconStar from "../icons/iconStar.vue";
 import { defineComponent } from "vue";
+
+// STORE
+import { useSurveyStore } from "../../../stores/survey";
+import { mapState } from "pinia";
 
 export default defineComponent({
   components: { iconStar },
   data() {
     return {
       show: true,
-      iconStartImg,
       iconThankYou,
       inProcess: false,
       isCompleted: false,
@@ -271,15 +298,15 @@ export default defineComponent({
       emailTouched: false as boolean,
       emailError: false as boolean,
 
-      oldAge: undefined as boolean | undefined,
+      oldAge: undefined as string | undefined,
       oldAgeTouched: false as boolean,
       oldAgeError: false as boolean,
 
-      gender: undefined as boolean | undefined,
+      gender: undefined as string | undefined,
       genderTouched: false as boolean,
       genderError: false as boolean,
 
-      favoriteSocialMedia: "" as string,
+      favoriteSocialMedia: undefined as string | undefined,
       favoriteSocialMediaTouched: false as boolean,
       favoriteSocialMediaError: false as boolean,
 
@@ -291,15 +318,17 @@ export default defineComponent({
       youtubeTime: 0,
 
       // STEPPER DATA
-      currentStep: 4,
+      currentStep: 1,
       minStep: 1,
       maxStep: 4,
     };
   },
   computed: {
-    count() {
-      return useMainStore().counter;
-    },
+    ...mapState(useSurveyStore, {
+      // myOwnName: "ageRanges",
+      ageRanges: (store) => store.ageRanges,
+      SocialMedias: (store) => store.SocialMedias,
+    }),
   },
   methods: {
     goToStep(stepNumber: number): void {
@@ -316,7 +345,39 @@ export default defineComponent({
       this.currentStep =
         this.currentStep === this.minStep ? this.maxStep : this.currentStep - 1;
     },
-    saveSurvey(): void {
+    async submit() {
+      const data = {
+        email: this.email,
+        ageRangeId: this.oldAge,
+        genderId: this.gender,
+        favSocialMedia: this.favoriteSocialMedia,
+        hours: {
+          facebook: this.facebookTime,
+          whatsapp: this.whatsTime,
+          twitter: this.twitterTime,
+          instagram: this.instagramTime,
+          tiktok: this.tiktokTime,
+          youtube: this.youtubeTime,
+        },
+      };
+      await fetch(
+        "https://emqusurvey-bd-default-rtdb.firebaseio.com/surveys.json",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    async saveSurvey(): Promise<any> {
       if (this.currentStep < this.maxStep) {
         this.nextStep();
         return;
@@ -324,10 +385,8 @@ export default defineComponent({
       if (this.currentStep === this.maxStep) {
         if (!this.inProcess) {
           this.inProcess = true;
-          setTimeout(() => {
-            this.inProcess = false;
-            this.isCompleted = true;
-          }, 2000);
+          await this.submit();
+          this.isCompleted = true;
         }
       }
     },
@@ -384,6 +443,15 @@ export default defineComponent({
   }
   &__footer {
     margin-top: 25px;
+    text-align: center;
+    .dashboard-link {
+      text-decoration: none;
+      background-color: $accent;
+      line-height: 0;
+      color: $white;
+      padding: 0.5em 1.5em;
+      border-radius: 0.5em;
+    }
   }
   .group {
     margin-bottom: 15px;
@@ -394,7 +462,7 @@ export default defineComponent({
       margin-left: 1em;
       margin-right: 1em;
       &__title {
-        // background-color: #bada55;
+        // background-color: $success;
         line-height: 1.3;
         font-weight: bold;
         letter-spacing: 0.25px;
@@ -431,7 +499,7 @@ export default defineComponent({
         -webkit-appearance: none; /* Safari and Chrome */
         appearance: none;
         &::placeholder {
-          // background-color: #bada55;
+          // background-color: $success;
         }
         option[selected] {
           // color: red;
@@ -465,7 +533,7 @@ export default defineComponent({
       }
 
       &:focus::-webkit-slider-runnable-track {
-        background: #bada55;
+        background: $success;
       }
 
       &::-moz-range-track {
@@ -487,7 +555,7 @@ export default defineComponent({
         color: transparent;
       }
       &::-ms-fill-lower {
-        background: #bada55;
+        background: $success;
         border: 0;
         border-radius: 5px;
       }
@@ -500,7 +568,7 @@ export default defineComponent({
         border-radius: 5px;
       }
       &:focus::-ms-fill-upper {
-        background: #bada55;
+        background: $success;
       }
 
       // THUMB
@@ -603,7 +671,7 @@ export default defineComponent({
     }
   }
   &.completed {
-    // background-color: #bada55;
+    // background-color: $success;
     .main-title {
       @extend %main-title;
       text-align: center;
