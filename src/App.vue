@@ -1,30 +1,60 @@
-<script lang="ts">
-import surveyStepper from "./components/core/surveyStepper/surveyStepper.vue";
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-
-export default {
-  components: { surveyStepper },
-  data() {
-    return {};
-  },
-};
-</script>
 
 <template>
-  <div class="main-page">
-    <survey-stepper></survey-stepper>
+  <div class="loader" :class="loaded ? 'loaded' : ''">
+    <div class="icon-loading">
+      <IconLoading color="#fb7413"></IconLoading>
+    </div>
   </div>
+  <router-view />
 </template>
+
+<script lang="ts">
+import { mapActions } from "pinia";
+import { defineComponent } from "vue";
+import { useSurveyStore } from "./stores/survey";
+import IconLoading from "./components/core/icons/iconLoading.vue";
+
+export default defineComponent({
+  data() {
+    return {
+      loaded: false as boolean,
+    };
+  },
+  async mounted() {
+    await this.loadSurveys();
+    this.loaded = true;
+  },
+  methods: {
+    ...mapActions(useSurveyStore, {
+      loadSurveys: "getSurveysData",
+    }),
+  },
+  components: { IconLoading },
+});
+</script>
 
 <style lang="scss">
 body {
   background-color: $bg-primary;
-}
-.main-page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .loader {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: $bg-primary;
+    z-index: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: clip-path 0.5s ease;
+    clip-path: circle(100% at 50% 50%);
+
+    &.loaded {
+      clip-path: circle(0% at 50% 50%);
+    }
+    .icon-loading {
+      color: white;
+      font-size: 2em;
+    }
+  }
 }
 </style>
