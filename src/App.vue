@@ -72,10 +72,11 @@ body {
     line-height: 0;
     padding: 10px;
     color: white;
-    bottom: 0;
     left: 0;
     transform: rotate(180deg);
     writing-mode: vertical-lr;
+    bottom: 50%;
+    transform: rotate(180deg) translateY(-50%);
     a {
       text-decoration: none;
     }
