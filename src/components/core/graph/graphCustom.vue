@@ -1,8 +1,8 @@
 <template>
   <div class="graph-wrapper">
-    <!-- <h2 class="main-title">
+    <h2 class="main-title">
       {{ title }}
-    </h2> -->
+    </h2>
     <!-- CHECK TYPE -->
     <template class="" v-if="type === 'p'">
       <div class="graph">
