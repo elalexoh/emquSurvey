@@ -30,7 +30,7 @@
                   class="input"
                   type="text"
                   id="input-1"
-                  placeholder="¿Cual es tu correo?"
+                  placeholder="¿Cuál es tu correo?"
                   v-model="email"
                   @blur="emailTouched = true"
                 />
@@ -79,7 +79,7 @@
                   id=""
                   @change="genderTouched = true"
                 >
-                  <option :value="undefined">Indicanos tu genero</option>
+                  <option :value="undefined">Indicanos tu género</option>
                   <option value="gender-a">Masculino</option>
                   <option value="gender-b">Femenino</option>
                   <option value="gender-c">No Binario</option>
@@ -96,7 +96,7 @@
                   class="input"
                   type="text"
                   id="input-1"
-                  placeholder="¿Cual es tu red social favorita?"
+                  placeholder="¿Cuál es tu red social favorita?"
                   v-model="favoriteSocialMedia"
                   @change="favoriteSocialMediaTouched = true"
                 /> -->
@@ -108,7 +108,7 @@
                   @change="favoriteSocialMediaTouched = true"
                 >
                   <option :value="undefined">
-                    ¿Cual es tu red social favorita?
+                    ¿Cuál es tu red social favorita?
                   </option>
                   <option
                     :value="socialMedia._id"
@@ -261,7 +261,7 @@
       <div class="stepper__content">
         <h2 class="main-title">¡Gracias!</h2>
         <p class="description">
-          Apreciamos que te tomaras el tiempo de responder las preguntas. sigue
+          Apreciamos que te tomaras el tiempo de responder las preguntas. Sigue
           <router-link class="link--text" to="/dashboard" tag=""
             >este</router-link
           >
