@@ -5,6 +5,16 @@
       <IconLoading color="#fb7413"></IconLoading>
     </div>
   </div>
+  <div class="development-by">
+    <p>
+      Desarrollado por
+      <a href="https://deeply-portfolio.netlify.app/" target="_blank"
+        ><span class="portfolio"
+          >&lt;&gt;Frederick A. Gonzalez&lt;/&gt;</span
+        ></a
+      >
+    </p>
+  </div>
   <router-view />
 </template>
 
@@ -54,6 +64,26 @@ body {
     .icon-loading {
       color: white;
       font-size: 2em;
+    }
+  }
+  .development-by {
+    position: absolute;
+    background-color: $accent;
+    line-height: 0;
+    padding: 10px;
+    color: white;
+    bottom: 0;
+    left: 0;
+    transform: rotate(180deg);
+    writing-mode: vertical-lr;
+    a {
+      text-decoration: none;
+    }
+    .portfolio {
+      font-weight: bold;
+      color: $bg-primary;
+      // opacity: 0.;
+      // color: ;
     }
   }
 }
