@@ -242,13 +242,11 @@
       <div class="stepper__footer">
         <button
           class="btn ripple"
-          :disabled="inProcess || !isSurveyCompleted()"
+          :disabled="inProcess || !isStepCompleted"
           type="submit"
           @click="saveSurvey()"
         >
-          <template v-if="!isSurveyCompleted()">
-            Complete la información
-          </template>
+          <template v-if="!isStepCompleted"> Complete la información </template>
           <template v-else-if="inProcess"> Espere un momento </template>
           <template v-else-if="currentStep === maxStep"> Enviar </template>
           <template v-else> Continuar </template>
@@ -328,6 +326,25 @@ export default defineComponent({
     };
   },
   computed: {
+    isStepCompleted(): boolean {
+      switch (this.currentStep) {
+        case 1:
+          return !this.emailError && !!this.email && !!this.oldAge;
+          break;
+        case 2:
+          return !!this.gender && !!this.favoriteSocialMedia;
+          break;
+        //Optional step
+        case 3:
+          return true;
+          break;
+
+        //Optional step
+        default:
+          return true;
+          break;
+      }
+    },
     ...mapState(useSurveyStore, {
       // myOwnName: "ageRanges",
       ageRanges: (store) => store.ageRanges,
@@ -340,7 +357,7 @@ export default defineComponent({
       return (
         !this.emailError &&
         !!this.email &&
-        !!this.oldAge!! &&
+        !!this.oldAge &&
         !!this.gender &&
         !!this.favoriteSocialMedia
       );
@@ -703,6 +720,12 @@ export default defineComponent({
       height: auto;
       margin-bottom: 20px;
     }
+  }
+  @media (max-width: 1344px) {
+    width: auto;
+  }
+  @media (max-width: 576px) {
+    max-width: calc(100% - 10em);
   }
 }
 .bounce-enter-active {
