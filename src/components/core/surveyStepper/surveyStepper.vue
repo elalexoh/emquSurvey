@@ -112,7 +112,7 @@
                   </option>
                   <option
                     :value="socialMedia._id"
-                    v-for="(socialMedia, i) in SocialMedias"
+                    v-for="(socialMedia, i) in socialMedias"
                     :key="i"
                   >
                     {{ socialMedia.label }}
@@ -327,7 +327,7 @@ export default defineComponent({
     ...mapState(useSurveyStore, {
       // myOwnName: "ageRanges",
       ageRanges: (store) => store.ageRanges,
-      SocialMedias: (store) => store.SocialMedias,
+      socialMedias: (store) => store.socialMedias,
     }),
   },
   methods: {

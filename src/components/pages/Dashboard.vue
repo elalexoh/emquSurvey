@@ -14,26 +14,9 @@
       </div>
       <!-- DETAILS -->
       <div class="card dashboard-content">
-        <div class="card__header">
-          <h2
-            class="badge success ripple"
-            :title="`Votes: ${mostPopular.votes}`"
-          >
-            <span class="">
-              {{ mostPopular.socialMedia.label }}
-            </span>
-            👍
-          </h2>
-          <h2
-            class="badge danger ripple"
-            :title="`Votes: ${leastPopular.votes}`"
-          >
-            <span class="">
-              {{ leastPopular.socialMedia.label }}
-            </span>
-            👎
-          </h2>
-        </div>
+        <!-- HEAD -->
+        <div class="card__header"></div>
+        <!-- BODY -->
         <div class="card__content">
           <!-- SOCIALMEDIA BY TIME -->
           <GraphCustom
@@ -53,9 +36,32 @@
             title="Uso por edad"
           ></GraphCustom>
         </div>
-        <div class="card__footer"></div>
+        <!-- FOOTER -->
+        <div class="card__footer">
+          <h2
+            class="badge success ripple"
+            :title="`Votes: ${mostPopular.votes}`"
+          >
+            <span class="">
+              {{ mostPopular.socialMedia.label }}
+            </span>
+            👍
+          </h2>
+          <h2
+            class="badge danger ripple"
+            :title="`Votes: ${leastPopular.votes}`"
+          >
+            <span class="">
+              {{ leastPopular.socialMedia.label }}
+            </span>
+            👎
+          </h2>
+        </div>
       </div>
     </div>
+    <router-link to="/" tag="a" class="link ripple"
+      >ir a la encuesta</router-link
+    >
   </div>
 </template>
 
@@ -225,11 +231,13 @@ export default defineComponent({
         socialMedia: {} as { _id: string; label: string },
         votes: -Infinity,
       };
-      for (const key in this.surveysByFav) {
+      for (const key in this.surveysByFav as any[]) {
+        // @ts-ignore: Unreachable code error
         let votes = this.surveysByFav[key].length;
 
         if (votes > mostPopular.votes) {
           mostPopular.votes = votes;
+          // @ts-ignore: Unreachable code error
           mostPopular.socialMedia = this.socialMedias.find((sm) => {
             return sm._id === key;
           });
@@ -243,10 +251,12 @@ export default defineComponent({
         votes: Infinity,
       };
       for (const key in this.surveysByFav) {
+        // @ts-ignore: Unreachable code error
         let votes = this.surveysByFav[key].length;
 
         if (votes < leastPopular.votes) {
           leastPopular.votes = votes;
+          // @ts-ignore: Unreachable code error
           leastPopular.socialMedia = this.socialMedias.find((sm) => {
             return sm._id === key;
           });
@@ -310,10 +320,12 @@ export default defineComponent({
     &.dashboard-content {
       width: max-content;
       .card__header {
+      }
+      .card__footer {
         justify-content: center;
         display: flex;
         gap: 2em;
-        margin-bottom: 2em;
+        margin-top: 2em;
         .badge {
           padding: 15px 10px;
           border-radius: 7.5px;
