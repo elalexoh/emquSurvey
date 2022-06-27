@@ -57,13 +57,13 @@ export const useSurveyStore = defineStore({
     },
     getTotal(): number { return this.surveys.length },
     getSurveysByFav(): {} {
-      return this.surveys.reduce((r, a) => {
+      return this.surveys.reduce((r: any, a) => {
         r[a.favSocialMedia] = [...(r[a.favSocialMedia] || []), a];
         return r;
       }, {});
     },
     getSurveysByAge(): {} {
-      return this.surveys.reduce((r, a) => {
+      return this.surveys.reduce((r: any, a) => {
         r[a.ageRangeId] = [...(r[a.ageRangeId] || []), a];
         return r;
       }, {});
@@ -128,7 +128,45 @@ export const useSurveyStore = defineStore({
       return hoursData
     },
     getRanges() {
-      let rangesData = {
+      interface RangesTotal {
+        'range-aTotal': number;
+        'range-bTotal': number;
+        'range-cTotal': number;
+        'range-dTotal': number;
+        'range-a': {
+          facebook: number,
+          instagram: number,
+          twitter: number,
+          tiktok: number,
+          youtube: number,
+          whatsapp: number,
+        };
+        'range-b': {
+          facebook: number,
+          instagram: number,
+          twitter: number,
+          tiktok: number,
+          youtube: number,
+          whatsapp: number,
+        };
+        'range-c': {
+          facebook: number,
+          instagram: number,
+          twitter: number,
+          tiktok: number,
+          youtube: number,
+          whatsapp: number,
+        };
+        'range-d': {
+          facebook: number,
+          instagram: number,
+          twitter: number,
+          tiktok: number,
+          youtube: number,
+          whatsapp: number,
+        };
+      }
+      let rangesData: RangesTotal = {
         "range-aTotal": 0,
         "range-bTotal": 0,
         "range-cTotal": 0,
@@ -168,16 +206,23 @@ export const useSurveyStore = defineStore({
       }
       for (const key in this.getSurveysByAge) {
         if (Object.prototype.hasOwnProperty.call(this.getSurveysByAge, key)) {
+          // @ts-ignore: Unreachable code error
           const ages = this.getSurveysByAge[key];
-          rangesData[`${key}Total`] = ages.length
+          rangesData[`${key}Total` as keyof RangesTotal] = ages.length
 
-
+          // @ts-ignore: Unreachable code error
           ages.forEach(survey => {
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['facebook'] += survey['favSocialMedia'] == 'sm-fc' ? 1 : 0;
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['instagram'] += survey['favSocialMedia'] == 'sm-in' ? 1 : 0;
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['youtube'] += survey['favSocialMedia'] == 'sm-yt' ? 1 : 0;
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['whatsapp'] += survey['favSocialMedia'] == 'sm-ws' ? 1 : 0;
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['tiktok'] += survey['favSocialMedia'] == 'sm-tk' ? 1 : 0;
+            // @ts-ignore: Unreachable code error
             rangesData[`${key}`]['twitter'] += survey['favSocialMedia'] == 'sm-tw' ? 1 : 0;
           });
         }
