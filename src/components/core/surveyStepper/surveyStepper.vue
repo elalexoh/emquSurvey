@@ -14,12 +14,12 @@
           />
           <pre></pre>
         </div>
-        <h1 class="main-title">How did we do?</h1>
+        <h1 class="main-title">¿Tienes unos minutos?</h1>
       </div>
       <div class="stepper__content">
         <p class="statement">
-          Please let us know how we did with your support request. All feedback
-          is appreciated to help us improve our offering!
+          Nos gustaria saber un poco sobre tu interacción con las redes
+          sociales, cuentanos:
         </p>
         <form action="" class="stepper-form">
           <!-- ?? Step 1 ?? -->
@@ -259,18 +259,20 @@
         <img class="icon-thank" :src="iconThankYou" alt="" />
       </div>
       <div class="stepper__content">
-        <h2 class="main-title">Thank you!</h2>
+        <h2 class="main-title">¡Gracias!</h2>
         <p class="description">
-          We appreciate you taking the time to give a rating. if you ever need
-          more support, don't hesitate to get in touch!
+          Apreciamos que te tomaras el tiempo de responder las preguntas. sigue
+          <router-link class="link--text" to="/dashboard" tag=""
+            >este</router-link
+          >
+          enlace para ir al dashboard y ver los resultados.
         </p>
       </div>
-      <div class="stepper__footer">
+      <!-- <div class="stepper__footer">
         <router-link class="dashboard-link ripple" to="/dashboard" tag="a"
           >Dashboard</router-link
         >
-        <!-- <a href="#">login</a> -->
-      </div>
+      </div> -->
     </template>
   </section>
 </template>
@@ -328,6 +330,7 @@ export default defineComponent({
       // myOwnName: "ageRanges",
       ageRanges: (store) => store.ageRanges,
       socialMedias: (store) => store.socialMedias,
+      loadSurveys: (store) => store.getSurveysData,
     }),
   },
   methods: {
@@ -386,6 +389,7 @@ export default defineComponent({
         if (!this.inProcess) {
           this.inProcess = true;
           await this.submit();
+          await this.loadSurveys();
           this.isCompleted = true;
         }
       }

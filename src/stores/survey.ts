@@ -229,73 +229,8 @@ export const useSurveyStore = defineStore({
       }
       return rangesData
     }
-
-    //TODO: EXPERIMENTAL
-    // getHours(): any {
-    //   let socialMediaData = {
-    //     facebookTime: 0,
-    //     instagramTime: 0,
-    //     tiktokTime: 0,
-    //     twitterTime: 0,
-    //     whatsappTime: 0,
-    //     youtubeTime: 0,
-    //     // favorites
-    //     facebookVotes: 0,
-    //     instagramVotes: 0,
-    //     tiktokVotes: 0,
-    //     twitterVotes: 0,
-    //     whatsappVotes: 0,
-    //     youtubeVotes: 0,
-    //   }
-    //   const hours: Hours[] = []
-
-    //   // TOTAL HOURS
-    //   if (this.loaded) {
-    //     this.surveys.forEach(survey => {
-    //       hours.push(JSON.parse(
-    //         JSON.stringify(survey.hours)
-    //       ))
-    //     });
-
-    //   }
-
-    //   //TOTAL VOTES
-    //   for (const key in hours) {
-    //     if (Object.prototype.hasOwnProperty.call(hours, key)) {
-    //       const element = hours[key];
-    //       socialMediaData.facebookTime += Number(element.facebook)
-    //       socialMediaData.instagramTime += Number(element.instagram)
-    //       socialMediaData.tiktokTime += Number(element.tiktok)
-    //       socialMediaData.twitterTime += Number(element.twitter)
-    //       socialMediaData.whatsappTime += Number(element.whatsapp)
-    //       socialMediaData.youtubeTime += Number(element.youtube)
-
-    //       this.socialMedias.find(socialMedia => {
-    //         if (socialMedia._id === this.surveys[key].favSocialMedia) {
-    //           let smVoteKey = socialMedia.label.toLowerCase() + 'Votes'
-    //           socialMediaData[smVoteKey] += 1
-    //         }
-    //       })
-    //     }
-    //   }
-
-    //   // Most Popular
-    //   var min = Infinity, max = -Infinity, x;
-    //   for (x in input) {
-    //     if (input[x] < min) min = input[x];
-    //     if (input[x] > max) max = input[x];
-    //   }
-    //   const lessPopular = ''
-
-    //   return socialMediaData
-    // },
-
-
   },
   actions: {
-    // increment(payload: number) {
-    //   this.step = this.step + payload
-    // },
     async getSurveysData() {
       const response = await fetch(
         "https://emqusurvey-bd-default-rtdb.firebaseio.com/surveys.json"

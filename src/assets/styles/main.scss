@@ -68,6 +68,27 @@ hr {
   &:hover {
     background-color: $success;
   }
+
+  &--text {
+    @extend .link;
+    padding            : 0;
+    background-color   : transparent;
+    font-weight        : normal;
+    font-size          : .9em;
+    // opacity         : .5;
+    text-transform     : unset;
+    color              : #959eac;
+    font-weight        : 300;
+    margin-bottom      : 20px;
+    line-height        : 1.5;
+    color              : $accent;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+
 }
 
 //GLOBALS

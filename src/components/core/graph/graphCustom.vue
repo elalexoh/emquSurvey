@@ -47,7 +47,7 @@
                       dataSets[range._id][sm.label.toLowerCase()],
                       favs[sm._id].length
                     )
-                  ) > 10.0
+                  ) > 1.0
                 "
                 :key="`result-${a}`"
                 :title="range.label"
