@@ -242,11 +242,11 @@
       <div class="stepper__footer">
         <button
           class="btn ripple"
-          :disabled="inProcess || !isSurveyCompleted"
+          :disabled="inProcess || !isSurveyCompleted()"
           type="submit"
           @click="saveSurvey()"
         >
-          <template v-if="!isSurveyCompleted">
+          <template v-if="!isSurveyCompleted()">
             Complete la información
           </template>
           <template v-else-if="inProcess"> Espere un momento </template>
@@ -334,8 +334,9 @@ export default defineComponent({
       socialMedias: (store) => store.socialMedias,
       loadSurveys: (store) => store.getSurveysData,
     }),
+  },
+  methods: {
     isSurveyCompleted() {
-      // this.email && this.oldAge && this.gender && this.favoriteSocialMedia
       return (
         !this.emailError &&
         !!this.email &&
@@ -344,8 +345,6 @@ export default defineComponent({
         !!this.favoriteSocialMedia
       );
     },
-  },
-  methods: {
     goToStep(stepNumber: number): void {
       if (stepNumber < this.minStep || stepNumber > this.maxStep) {
         throw new Error("El paso al que deseas ir no existe");
