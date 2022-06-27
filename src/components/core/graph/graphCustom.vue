@@ -36,7 +36,7 @@
           :key="`sm-${i}`"
         >
           <!-- ${(data.users * 100) / total}% -->
-          <div class="proyection" :title="``">
+          <div class="proyection">
             <template v-for="(range, a) in ranges">
               <div
                 class="result"
@@ -128,10 +128,11 @@ export default defineComponent({
 .graph-wrapper.graph-wrapper {
   // margin-bottom: 4em;
   .main-title {
-    text-align: center;
-    font-size: 1.25em;
+    text-align: right;
+    font-size: 1em;
     font-weight: bold;
     margin-bottom: 1em;
+    opacity: 0.5;
   }
 }
 .graph {

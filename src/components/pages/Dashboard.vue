@@ -342,7 +342,7 @@ export default defineComponent({
         }
       }
       .card__content {
-        margin: 1em 0;
+        // margin: 1em 0;
       }
     }
   }
