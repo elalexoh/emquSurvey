@@ -12,7 +12,6 @@
             :key="`ic-${i + 1}`"
             @click="goToStep(i + 1)"
           />
-          <pre></pre>
         </div>
         <h1 class="main-title">¿Tienes unos minutos?</h1>
       </div>
@@ -243,11 +242,14 @@
       <div class="stepper__footer">
         <button
           class="btn ripple"
-          :disabled="inProcess"
+          :disabled="inProcess || !isSurveyCompleted"
           type="submit"
           @click="saveSurvey()"
         >
-          <template v-if="inProcess"> Espere un momento </template>
+          <template v-if="!isSurveyCompleted">
+            Complete la información
+          </template>
+          <template v-else-if="inProcess"> Espere un momento </template>
           <template v-else-if="currentStep === maxStep"> Enviar </template>
           <template v-else> Continuar </template>
         </button>
@@ -332,6 +334,16 @@ export default defineComponent({
       socialMedias: (store) => store.socialMedias,
       loadSurveys: (store) => store.getSurveysData,
     }),
+    isSurveyCompleted() {
+      // this.email && this.oldAge && this.gender && this.favoriteSocialMedia
+      return (
+        !this.emailError &&
+        !!this.email &&
+        !!this.oldAge!! &&
+        !!this.gender &&
+        !!this.favoriteSocialMedia
+      );
+    },
   },
   methods: {
     goToStep(stepNumber: number): void {
