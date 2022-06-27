@@ -12,7 +12,6 @@
             :key="`ic-${i + 1}`"
             @click="goToStep(i + 1)"
           />
-          <pre></pre>
         </div>
         <h1 class="main-title">¿Tienes unos minutos?</h1>
       </div>
@@ -30,7 +29,7 @@
                   class="input"
                   type="text"
                   id="input-1"
-                  placeholder="¿Cual es tu correo?"
+                  placeholder="¿Cuál es tu correo?"
                   v-model="email"
                   @blur="emailTouched = true"
                 />
@@ -79,7 +78,7 @@
                   id=""
                   @change="genderTouched = true"
                 >
-                  <option :value="undefined">Indicanos tu genero</option>
+                  <option :value="undefined">Indicanos tu género</option>
                   <option value="gender-a">Masculino</option>
                   <option value="gender-b">Femenino</option>
                   <option value="gender-c">No Binario</option>
@@ -96,7 +95,7 @@
                   class="input"
                   type="text"
                   id="input-1"
-                  placeholder="¿Cual es tu red social favorita?"
+                  placeholder="¿Cuál es tu red social favorita?"
                   v-model="favoriteSocialMedia"
                   @change="favoriteSocialMediaTouched = true"
                 /> -->
@@ -108,7 +107,7 @@
                   @change="favoriteSocialMediaTouched = true"
                 >
                   <option :value="undefined">
-                    ¿Cual es tu red social favorita?
+                    ¿Cuál es tu red social favorita?
                   </option>
                   <option
                     :value="socialMedia._id"
@@ -243,11 +242,12 @@
       <div class="stepper__footer">
         <button
           class="btn ripple"
-          :disabled="inProcess"
+          :disabled="inProcess || !isStepCompleted"
           type="submit"
           @click="saveSurvey()"
         >
-          <template v-if="inProcess"> Espere un momento </template>
+          <template v-if="!isStepCompleted"> Complete la información </template>
+          <template v-else-if="inProcess"> Espere un momento </template>
           <template v-else-if="currentStep === maxStep"> Enviar </template>
           <template v-else> Continuar </template>
         </button>
@@ -261,7 +261,7 @@
       <div class="stepper__content">
         <h2 class="main-title">¡Gracias!</h2>
         <p class="description">
-          Apreciamos que te tomaras el tiempo de responder las preguntas. sigue
+          Apreciamos que te tomaras el tiempo de responder las preguntas. Sigue
           <router-link class="link--text" to="/dashboard" tag=""
             >este</router-link
           >
@@ -326,6 +326,25 @@ export default defineComponent({
     };
   },
   computed: {
+    isStepCompleted(): boolean {
+      switch (this.currentStep) {
+        case 1:
+          return !this.emailError && !!this.email && !!this.oldAge;
+          break;
+        case 2:
+          return !!this.gender && !!this.favoriteSocialMedia;
+          break;
+        //Optional step
+        case 3:
+          return true;
+          break;
+
+        //Optional step
+        default:
+          return true;
+          break;
+      }
+    },
     ...mapState(useSurveyStore, {
       // myOwnName: "ageRanges",
       ageRanges: (store) => store.ageRanges,
@@ -334,6 +353,15 @@ export default defineComponent({
     }),
   },
   methods: {
+    isSurveyCompleted() {
+      return (
+        !this.emailError &&
+        !!this.email &&
+        !!this.oldAge &&
+        !!this.gender &&
+        !!this.favoriteSocialMedia
+      );
+    },
     goToStep(stepNumber: number): void {
       if (stepNumber < this.minStep || stepNumber > this.maxStep) {
         throw new Error("El paso al que deseas ir no existe");
@@ -692,6 +720,12 @@ export default defineComponent({
       height: auto;
       margin-bottom: 20px;
     }
+  }
+  @media (max-width: 1344px) {
+    width: auto;
+  }
+  @media (max-width: 576px) {
+    max-width: calc(100% - 10em);
   }
 }
 .bounce-enter-active {
